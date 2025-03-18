@@ -1,0 +1,342 @@
+user@user-HP-280-G3-MT:~$ sudo mysql -u root
+[sudo] password for user: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.7.42-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database company;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use company;
+Database changed
+mysql> create table location(location_id int primary key,reginal_group varchar(20));
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> create table department(dept_id int primary key,name varchar(50),location_id int,foreign key(location_id) reference location(location_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference location(location_id))' at line 1
+mysql> create table department(dept_id int primary key,name varchar(50),location_id int,foreign key(location_id) references location(location_id));
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> create table job(job_id int primary key,function varchar(30));
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> create table employee(emp_id int primary key,lastname varchar(50),firstname varchar(50),middlename varchar(50),job_id int,manager_id int,hiredate DATE,salary decimal(10,2),dept_id int, foreign key(job_id) references job(job_id),foreign key(dept_id) references department(dept_id));
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> create table loan(emp_id int primary key,firstname varchar(50),loan_amount decimal(10,2),foreign key(emp_id) references employee(emp_id));
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> insert into location values (1,'newyork'),(2,'sanfrancisco");
+    '> insert into location values (1,'newyork'),(2,'sanfrancisco');
+    '> 
+[1]+  Stopped                 sudo mysql -u root
+user@user-HP-280-G3-MT:~$ sudo mysql -u root
+[sudo] password for user: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 6
+Server version: 5.7.42-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use company;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> insert into location values(1,'newyork'),(2,'sanfrancisco');
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into department values(10,'accounting',1),(20,'sales',2),(30,'hr',1);
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into job values(1,'managers'),(2,'clerk'),(3,'salesperson');
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into employee values(101,'smith','jhon','a',1,NULL,'1985-06-01',60000,10),(102,'doe','jane','b',2,101,'1990-07-15',45000,20),(103,'brown','tom','c',3,101,'1985-09-20',50000,30),(104,'jones','mary','d',2,101,'2000-05-23',40000,20),(105,'taylor','mike','e',1,NULL,'2010-11-10',70000,30);
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into loan values(101,'jhon,10000),(103,'tom',5000);
+    '> insert into loan values(101,'jhon',10000),(103,'tom',5000);
+    '> ^C
+
+^C
+mysql> insert into loan values(101,'jhon',10000),(103,'tom',5000);
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from location;
++-------------+---------------+
+| location_id | reginal_group |
++-------------+---------------+
+|           1 | newyork       |
+|           2 | sanfrancisco  |
++-------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from department;
++---------+------------+-------------+
+| dept_id | name       | location_id |
++---------+------------+-------------+
+|      10 | accounting |           1 |
+|      20 | sales      |           2 |
+|      30 | hr         |           1 |
++---------+------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from job;
++--------+-------------+
+| job_id | function    |
++--------+-------------+
+|      1 | managers    |
+|      2 | clerk       |
+|      3 | salesperson |
++--------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee;
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+| emp_id | lastname | firstname | middlename | job_id | manager_id | hiredate   | salary   | dept_id |
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+|    101 | smith    | jhon      | a          |      1 |       NULL | 1985-06-01 | 60000.00 |      10 |
+|    102 | doe      | jane      | b          |      2 |        101 | 1990-07-15 | 45000.00 |      20 |
+|    103 | brown    | tom       | c          |      3 |        101 | 1985-09-20 | 50000.00 |      30 |
+|    104 | jones    | mary      | d          |      2 |        101 | 2000-05-23 | 40000.00 |      20 |
+|    105 | taylor   | mike      | e          |      1 |       NULL | 2010-11-10 | 70000.00 |      30 |
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from loan;
++--------+-----------+-------------+
+| emp_id | firstname | loan_amount |
++--------+-----------+-------------+
+|    101 | jhon      |    10000.00 |
+|    103 | tom       |     5000.00 |
++--------+-----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select employee.emp-id,employee.firstname,employee.lastname,loan.loan_amount from employee full outer join loan on employee.emp_id=loan.emp_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'outer join loan on employee.emp_id=loan.emp_id' at line 1
+mysql> select employee.emp-id,employee.firstname,employee.lastname,loan.loan_amount from employee inner join loan on employee.emp_id=loan.emp_id;
+ERROR 1054 (42S22): Unknown column 'employee.emp' in 'field list'
+mysql> 
+mysql> select employee.emp_id,employee.firstname,employee.lastname,loan.loan_amount from employee inner join loan on employee.emp_id=loan.emp_id;
++--------+-----------+----------+-------------+
+| emp_id | firstname | lastname | loan_amount |
++--------+-----------+----------+-------------+
+|    101 | jhon      | smith    |    10000.00 |
+|    103 | tom       | brown    |     5000.00 |
++--------+-----------+----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select employee.emp_id,employee.firstname,employee.lastname,loan.loan_amount from employee left join loan on employee.emp_id=loan.emp_id;
++--------+-----------+----------+-------------+
+| emp_id | firstname | lastname | loan_amount |
++--------+-----------+----------+-------------+
+|    101 | jhon      | smith    |    10000.00 |
+|    103 | tom       | brown    |     5000.00 |
+|    102 | jane      | doe      |        NULL |
+|    104 | mary      | jones    |        NULL |
+|    105 | mike      | taylor   |        NULL |
++--------+-----------+----------+-------------+
+5 rows in set (0.01 sec)
+
+mysql> select employee.emp_id,employee.firstname,employee.lastname,loan.loan_amount from employee right join loan on employee.emp_id=loan.emp_id;
++--------+-----------+----------+-------------+
+| emp_id | firstname | lastname | loan_amount |
++--------+-----------+----------+-------------+
+|    101 | jhon      | smith    |    10000.00 |
+|    103 | tom       | brown    |     5000.00 |
++--------+-----------+----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select employee.emp_id,employee.firstname,employee.lastname,loan.loan_amount from employee full outer join loan on employee.emp_id=loan.emp_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'outer join loan on employee.emp_id=loan.emp_id' at line 1
+mysql> select employee.emp_id,employee.firstname,employee.lastname,loan.loan_amount from employee full OUTER join loan on employee.emp_id=loan.emp_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OUTER join loan on employee.emp_id=loan.emp_id' at line 1
+mysql> SELECT emp_id,firstname from employee union select emp_id,firstname from loan;
++--------+-----------+
+| emp_id | firstname |
++--------+-----------+
+|    101 | jhon      |
+|    102 | jane      |
+|    103 | tom       |
+|    104 | mary      |
+|    105 | mike      |
++--------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT emp_id,firstname from employee union all select emp_id,firstname from loan;
++--------+-----------+
+| emp_id | firstname |
++--------+-----------+
+|    101 | jhon      |
+|    102 | jane      |
+|    103 | tom       |
+|    104 | mary      |
+|    105 | mike      |
+|    101 | jhon      |
+|    103 | tom       |
++--------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT emp_id,firstname from employee intersect select emp_id,firstname from loan;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select emp_id,firstname from loan' at line 1
+mysql> SELECT emp_id,firstname from employee intersect SELECT emp_id,firstname from loan;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT emp_id,firstname from loan' at line 1
+mysql> SELECT emp_id,firstname from employee EXCEPT SELECT emp_id,firstname from loan;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT emp_id,firstname from loan' at line 1
+mysql> select count(*) from employee join department on employee.dept_id=department.dept_id where department.name='sales';
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select emp_id,firstname,lastname from employee where dept_id not in(10,30);
++--------+-----------+----------+
+| emp_id | firstname | lastname |
++--------+-----------+----------+
+|    102 | jane      | doe      |
+|    104 | mary      | jones    |
++--------+-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select emp_id,firstname,lastname from employee order by salary desc;
++--------+-----------+----------+
+| emp_id | firstname | lastname |
++--------+-----------+----------+
+|    105 | mike      | taylor   |
+|    101 | jhon      | smith    |
+|    103 | tom       | brown    |
+|    102 | jane      | doe      |
+|    104 | mary      | jones    |
++--------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select dept_id,count(*) as employee_count from employee group by dept_id;
++---------+----------------+
+| dept_id | employee_count |
++---------+----------------+
+|      10 |              1 |
+|      20 |              2 |
+|      30 |              2 |
++---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select dept_id from employee group by dept_id having count(*)>=4;
+Empty set (0.00 sec)
+
+mysql> select*from employee where salary=(select max(salary)from employee);
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+| emp_id | lastname | firstname | middlename | job_id | manager_id | hiredate   | salary   | dept_id |
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+|    105 | taylor   | mike      | e          |      1 |       NULL | 2010-11-10 | 70000.00 |      30 |
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+1 row in set (0.00 sec)
+
+mysql> update employee set salary=salary * 1.10 where job_id=(select job_id from job where function='clerk');
+Query OK, 2 rows affected (0.03 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select *from employee;
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+| emp_id | lastname | firstname | middlename | job_id | manager_id | hiredate   | salary   | dept_id |
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+|    101 | smith    | jhon      | a          |      1 |       NULL | 1985-06-01 | 60000.00 |      10 |
+|    102 | doe      | jane      | b          |      2 |        101 | 1990-07-15 | 49500.00 |      20 |
+|    103 | brown    | tom       | c          |      3 |        101 | 1985-09-20 | 50000.00 |      30 |
+|    104 | jones    | mary      | d          |      2 |        101 | 2000-05-23 | 44000.00 |      20 |
+|    105 | taylor   | mike      | e          |      1 |       NULL | 2010-11-10 | 70000.00 |      30 |
++--------+----------+-----------+------------+--------+------------+------------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> delete from employee where dept_id=(select dept_id from department where name='accounting');
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`loan`, CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`))
+mysql> select department.dept_id,department.name from department left join employee on department.dept_id=employee.dept_id where employee.emp_id is NULL;
+select department.dept_id,department.name from department left join employee on department.dept_id=employee.dept_id where employee.emp_id is NULL;
+^C
+mysql> update employee set salary=salary * 1.10 where job_id=(select job_id from job where function='clerk');delete from employee where dept_id=(select dept_id from department where name='accounting');
+Query OK, 2 rows affected (0.05 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`loan`, CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`))
+mysql> ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`loan`, CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`))
+    -> ^C
+
+^C
+mysql> delete from employee where dept_id=(select dept_id from department where name='accounting');
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`loan`, CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`))
+mysql> ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`loan`, CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`))
+    -> ^C
+
+^C
+mysql> delete from employee where dept_id=(select dept_id from department where name='accounting');
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`loan`, CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`))
+mysql> ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`loan`, CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`))
+    -> ^C
+
+^C
+mysql> select department.dept_id,department.name from department left join employee on department.dept_id=employee.dept_id where employee.emp_id is NULL;
+Empty set (0.00 sec)
+
+mysql> select dept_id, max(salary)as max_sal,min(salary) as min_sal,AVG(salary) as avg_sal from employee group by dept_id;
++---------+----------+----------+--------------+
+| dept_id | max_sal  | min_sal  | avg_sal      |
++---------+----------+----------+--------------+
+|      10 | 60000.00 | 60000.00 | 60000.000000 |
+|      20 | 54450.00 | 48400.00 | 51425.000000 |
+|      30 | 70000.00 | 50000.00 | 60000.000000 |
++---------+----------+----------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select count(*) from employee where YEAR(hiredate)=1985;
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select employee.emp_id,employee.firstname from employee join department on employee.dept_id=department.dept_id join location on department.location_id=location.location_id where location.reginal_group='newyork';
++--------+-----------+
+| emp_id | firstname |
++--------+-----------+
+|    101 | jhon      |
+|    103 | tom       |
+|    105 | mike      |
++--------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select employee.emp_id,employee.firstname,department.name as dept_name from employee join department on employee.dept_id=department.dept_id; 
++--------+-----------+------------+
+| emp_id | firstname | dept_name  |
++--------+-----------+------------+
+|    101 | jhon      | accounting |
+|    102 | jane      | sales      |
+|    103 | tom       | hr         |
+|    104 | mary      | sales      |
+|    105 | mike      | hr         |
++--------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> 
+

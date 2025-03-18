@@ -1,0 +1,444 @@
+user@user-HP-280-G3-MT:~$ sudo mysql -u root
+[sudo] password for user: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.7.42-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use bank;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> desc borrow
+    -> :
+    -> ;
+;
+^C
+mysql> desc borrow;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| loan_no   | varchar(5)  | NO   | PRI | NULL    |       |
+| cust_id   | varchar(10) | YES  |     | NULL    |       |
+| branch_id | varchar(5)  | YES  |     | NULL    |       |
+| amount    | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into borrow(loan_no,cust_id,branch_id,amount) values(201,1,2,60000),(202,3,3,45000),(203,5,5,80000),(204,7,7,90000),(205,9,9,100000),(206,10,10,75000),(207,2,4,20000),(208,4,6,30000),(209,6,8,65000),(210,8,1,72000);
+Query OK, 10 rows affected (0.05 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from borrow;
++---------+---------+-----------+--------+
+| loan_no | cust_id | branch_id | amount |
++---------+---------+-----------+--------+
+| 201     | 1       | 2         |  60000 |
+| 202     | 3       | 3         |  45000 |
+| 203     | 5       | 5         |  80000 |
+| 204     | 7       | 7         |  90000 |
+| 205     | 9       | 9         | 100000 |
+| 206     | 10      | 10        |  75000 |
+| 207     | 2       | 4         |  20000 |
+| 208     | 4       | 6         |  30000 |
+| 209     | 6       | 8         |  65000 |
+| 210     | 8       | 1         |  72000 |
++---------+---------+-----------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select cust_d,c_name from customer;
+ERROR 1054 (42S22): Unknown column 'cust_d' in 'field list'
+mysql> select cust_id,c_name from customer;
++---------+---------+
+| cust_id | c_name  |
++---------+---------+
+|       1 | anil    |
+|       2 | suresh  |
+|       3 | asha    |
+|       4 | raj     |
+|       5 | sneha   |
+|       6 | manoj   |
+|       7 | sathish |
+|       8 | sara    |
+|       9 | varun   |
+|      10 | neha    |
++---------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select cust_id from account where amount>10000;
+ERROR 1146 (42S02): Table 'bank.account' doesn't exist
+mysql> select cust_id from deposit where amount>10000;
++---------+
+| cust_id |
++---------+
+| 1       |
+| 3       |
+| 5       |
+| 6       |
+| 7       |
+| 9       |
+| 10      |
++---------+
+7 rows in set (0.00 sec)
+
+mysql> select open_date from deposit where cust_id=(select cust_id from customer where c_name='anil');
++------------+
+| open_date  |
++------------+
+| 2015-06-10 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select cust_id from open_date>'2016-01-01';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '>'2016-01-01'' at line 1
+mysql> select cust_id where open_date>'2016-01-01'from                                                                            deposit ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where open_date>'2016-01-01'from                                                ' at line 1
+mysql> select cust_id from deposit where open_date>'2016-01-01';
++---------+
+| cust_id |
++---------+
+| 2       |
+| 3       |
+| 4       |
+| 5       |
+| 6       |
+| 7       |
+| 10      |
++---------+
+7 rows in set (0.00 sec)
+
+mysql> select acc_no,cust_id from deposit where amount between 4000 and 80000;
++--------+---------+
+| acc_no | cust_id |
++--------+---------+
+| 102    | 2       |
+| 103    | 3       |
+| 104    | 4       |
+| 105    | 5       |
+| 106    | 6       |
+| 107    | 7       |
+| 108    | 8       |
+| 109    | 9       |
+| 110    | 10      |
++--------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select c_name from customer where c_name like '_a%';
++---------+
+| c_name  |
++---------+
+| raj     |
+| manoj   |
+| sathish |
+| sara    |
+| varun   |
++---------+
+5 rows in set (0.00 sec)
+
+mysql> select acc_no,amount from customer join account using(cust_id) where length(c_name)=5;
+ERROR 1146 (42S02): Table 'bank.account' doesn't exist
+mysql> select acc_no,amount from customer join deposit using(cust_id) where length(c_name)=5;
++--------+--------+
+| acc_no | amount |
++--------+--------+
+| 105    |  45000 |
+| 106    |  80000 |
+| 109    |  60000 |
++--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select cust_id,loan_no,amount from borrow;
++---------+---------+--------+
+| cust_id | loan_no | amount |
++---------+---------+--------+
+| 1       | 201     |  60000 |
+| 3       | 202     |  45000 |
+| 5       | 203     |  80000 |
+| 7       | 204     |  90000 |
+| 9       | 205     | 100000 |
+| 10      | 206     |  75000 |
+| 2       | 207     |  20000 |
+| 4       | 208     |  30000 |
+| 6       | 209     |  65000 |
+| 8       | 210     |  72000 |
++---------+---------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select cust_id,c_name from customer where cust_id in (select cust_id from deposit);                                                                                                                            
++---------+---------+
+| cust_id | c_name  |
++---------+---------+
+|       1 | anil    |
+|       2 | suresh  |
+|       3 | asha    |
+|       4 | raj     |
+|       5 | sneha   |
+|       6 | manoj   |
+|       7 | sathish |
+|       8 | sara    |
+|       9 | varun   |
+|      10 | neha    |
++---------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select cust_id,c_name from customer where cust_id in(select cust_id from deposit) and cust_id not in (select cust_id from borrow);
+Empty set (0.00 sec)
+
+mysql> select cust_id,c_name from customer where cust_id in(select cust_id from deposit) and cust_id NOT IN (select cust_id from borrow);
+Empty set (0.00 sec)
+
+mysql> SELECT cust_id,c_name from customer where cust_id in(select cust_id from deposit) and cust_id in(select cust_id from borrow);
++---------+---------+
+| cust_id | c_name  |
++---------+---------+
+|       1 | anil    |
+|       3 | asha    |
+|       5 | sneha   |
+|       7 | sathish |
+|       9 | varun   |
+|      10 | neha    |
+|       2 | suresh  |
+|       4 | raj     |
+|       6 | manoj   |
+|       8 | sara    |
++---------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select cust_id,amount as amount from borrow union select cust_id,amount from deposit;
++---------+--------+
+| cust_id | amount |
++---------+--------+
+| 1       |  60000 |
+| 3       |  45000 |
+| 5       |  80000 |
+| 7       |  90000 |
+| 9       | 100000 |
+| 10      |  75000 |
+| 2       |  20000 |
+| 4       |  30000 |
+| 6       |  65000 |
+| 8       |  72000 |
+| 1       | 150000 |
+| 2       |   5000 |
+| 3       |  25000 |
+| 4       |   7000 |
+| 5       |  45000 |
+| 6       |  80000 |
+| 7       |  12000 |
+| 8       |   9000 |
+| 9       |  60000 |
++---------+--------+
+19 rows in set (0.00 sec)
+
+mysql> mysql> select distinct customer.city from customer join deposit on customer.cust_id=deposit.cust_id join branch1 on deposit.branch_id=branch1.branch_id where branch.bname='cherthala';
+ERROR 1146 (42S02): Table 'bank.depositdeposit' doesn't exist
+mysql> select distinct customer.city from customer join deposit on customer.cust_id=deposit.cust_id join branch1 on deposit.branch_id=branch1.branch_id where branch.bname='cherthala';
+ERROR 1054 (42S22): Unknown column 'branch.bname' in 'where clause'
+mysql> select distinct customer.city from customer join deposit on customer.cust_id=deposit.cust_id join branch1 on deposit.branch_id=branch1.branch_id where branch1.bname='cherthala';
++-------+
+| city  |
++-------+
+| kochi |
++-------+
+1 row in set (0.00 sec)
+
+mysql> selectsum(amount) as total_loan from borrow;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selectsum(amount) as total_loan from borrow' at line 1
+mysql> select sum(amount) as total_loan from borrow;
++------------+
+| total_loan |
++------------+
+|     637000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(amount) as total-deposit from deposit;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-deposit from deposit' at line 1
+mysql> select sum(amount) as total_deposit from deposit;
++---------------+
+| total_deposit |
++---------------+
+|        468000 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select max(deposit.amount) as max_deposit;
+ERROR 1109 (42S02): Unknown table 'deposit' in field list
+mysql> select max(deposit.amount) as max_deposit from deposit;
++-------------+
+| max_deposit |
++-------------+
+|      150000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(deposit.amount) as max_deposit from deposit join customer on deposit.cust_id=customer.cust_id where customer.city="ekm";
++-------------+
+| max_deposit |
++-------------+
+|        5000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(distinct city)as total_branch_cities from branch1;
++---------------------+
+| total_branch_cities |
++---------------------+
+|                  10 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select branch_id,sum(amount) as total_deposit from deposit group by branch_id;
++-----------+---------------+
+| branch_id | total_deposit |
++-----------+---------------+
+| 1         |        150000 |
+| 10        |         75000 |
+| 2         |          5000 |
+| 3         |         25000 |
+| 4         |          7000 |
+| 5         |         45000 |
+| 6         |         80000 |
+| 7         |         12000 |
+| 8         |          9000 |
+| 9         |         60000 |
++-----------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select branch_id,sum(amount) as total_deposit from deposit group by branch_id having sum(amount)>4000;
++-----------+---------------+
+| branch_id | total_deposit |
++-----------+---------------+
+| 1         |        150000 |
+| 10        |         75000 |
+| 2         |          5000 |
+| 3         |         25000 |
+| 4         |          7000 |
+| 5         |         45000 |
+| 6         |         80000 |
+| 7         |         12000 |
+| 8         |          9000 |
+| 9         |         60000 |
++-----------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select customer.cust_id,customer.c_name,deposit.amount from deposit join customer on deposit.cust_id= customer.cust_id where deposit.amount=(select min(amount) from deposit);
++---------+--------+--------+
+| cust_id | c_name | amount |
++---------+--------+--------+
+|       2 | suresh |   5000 |
++---------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select count(distinct deposit.cust_id) as depositors from deposit join customer on deposit.cust_id=customer.cust_id where customer.city='cherthala';
++------------+
+| depositors |
++------------+
+|          0 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(amount) as max_deposit from deposit join branch1 on deposit.branch_id=branch1.branch_id where branch1.city='alappuzha';
++-------------+
+| max_deposit |
++-------------+
+|        NULL |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(amount) as max_deposit from deposit join branch1 on deposit.branch_id=branch1.branch_id where branch1.city='cherthala';
++-------------+
+| max_deposit |
++-------------+
+|        NULL |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(amount) as max_deposit from deposit join branch1 on deposit.branch_id=branch1.branch_id where branch1.city='kochi';
++-------------+
+| max_deposit |
++-------------+
+|      150000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)as customer_count from customer where city='ekm';
++----------------+
+| customer_count |
++----------------+
+|              1 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select cust_id,c_name,city from customer where city not in ('ekm','kochi');
++---------+---------+-----------+
+| cust_id | c_name  | city      |
++---------+---------+-----------+
+|       3 | asha    | thrissure |
+|       4 | raj     | kottayam  |
+|       5 | sneha   | tvm       |
+|       6 | manoj   | alappy    |
+|       7 | sathish | calicute  |
+|       8 | sara    | kollam    |
+|       9 | varun   | kannur    |
+|      10 | neha    | palakkad  |
++---------+---------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select cust_id,c_name from customer order by c_name desc;
++---------+---------+
+| cust_id | c_name  |
++---------+---------+
+|       9 | varun   |
+|       2 | suresh  |
+|       5 | sneha   |
+|       7 | sathish |
+|       8 | sara    |
+|       4 | raj     |
+|      10 | neha    |
+|       6 | manoj   |
+|       3 | asha    |
+|       1 | anil    |
++---------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select branch_id,count(distinct cust_id)as no_of_depositors from deposit group by branch_id;
++-----------+------------------+
+| branch_id | no_of_depositors |
++-----------+------------------+
+| 1         |                1 |
+| 10        |                1 |
+| 2         |                1 |
+| 3         |                1 |
+| 4         |                1 |
+| 5         |                1 |
+| 6         |                1 |
+| 7         |                1 |
+| 8         |                1 |
+| 9         |                1 |
++-----------+------------------+
+10 rows in set (0.00 sec)
+
+mysql> select branch1.branch_id,branch.bname from branch1 left join borrow on branch1.branch_id=borrow.branch_id where borrow.branch_id is null;
+ERROR 1054 (42S22): Unknown column 'branch.bname' in 'field list'
+mysql> select branch1.branch_id,branch1.bname from branch1 left join borrow on branch1.branch_id=borrow.branch_id where borrow.branch_id is null;
+Empty set (0.00 sec)
+
+mysql> select count(distinct cust_id) as customer_count from deposit where open_date>'2016-01-01';
++----------------+
+| customer_count |
++----------------+
+|              7 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> 
+
