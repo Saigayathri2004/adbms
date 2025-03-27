@@ -1,0 +1,105 @@
+user@user-HP-280-G3-MT:~$ sudo mysql -u root
+[sudo] password for user: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.7.42-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use company
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create view location_view as select regional_group from location;
+ERROR 1054 (42S22): Unknown column 'regional_group' in 'field list'
+mysql> select *from location
+    -> ;
++-------------+---------------+
+| location_id | reginal_group |
++-------------+---------------+
+|           1 | newyork       |
+|           2 | sanfrancisco  |
++-------------+---------------+
+2 rows in set (0.02 sec)
+
+mysql> create view location_view as select reginal_group from location;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select *from location;
++-------------+---------------+
+| location_id | reginal_group |
++-------------+---------------+
+|           1 | newyork       |
+|           2 | sanfrancisco  |
++-------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select *from location_view;
++---------------+
+| reginal_group |
++---------------+
+| newyork       |
+| sanfrancisco  |
++---------------+
+2 rows in set (0.01 sec)
+
+mysql> create index new_index on location(location_id);
+Query OK, 0 rows affected (0.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show indexes from location;
++----------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table    | Non_unique | Key_name  | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++----------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| location |          0 | PRIMARY   |            1 | location_id | A         |           2 |     NULL | NULL   |      | BTREE      |         |               |
+| location |          1 | new_index |            1 | location_id | A         |           2 |     NULL | NULL   |      | BTREE      |         |               |
++----------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.01 sec)
+
+mysql> alter table location drop index new_index;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from location;
++-------------+---------------+
+| location_id | reginal_group |
++-------------+---------------+
+|           1 | newyork       |
+|           2 | sanfrancisco  |
++-------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> create index new_index on location(location_id);
+Query OK, 0 rows affected (0.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from location;
++-------------+---------------+
+| location_id | reginal_group |
++-------------+---------------+
+|           1 | newyork       |
+|           2 | sanfrancisco  |
++-------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table location drop index new_index;
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show indexes from location;
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table    | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| location |          0 | PRIMARY  |            1 | location_id | A         |           2 |     NULL | NULL   |      | BTREE      |         |               |
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.00 sec)
+
+mysql> 
+
