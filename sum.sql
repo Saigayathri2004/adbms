@@ -6,6 +6,6 @@ begin
 a := &a;
 b := &b;
 s := a+b;
-dbms_output.put_line('sum is ',s);
+dbms_output.put_line('sum is '||s);
 end;
 /
