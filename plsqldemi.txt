@@ -1,0 +1,265 @@
+user@user-HP-280-G3-MT:~$ sqlplus sys as sysdba
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Apr 3 13:38:56 2025
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Enter password: 
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> begin
+  2  dbms_output.put_line('hello');
+  3  end;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> set serveroutput on
+SQL> begin
+  2  dbms_output.put_line('hello');
+  3  end;
+  4  /
+hello
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2  a integer;
+  3  b integer;
+  4  s integer;
+  5  begin
+  6  a := &a;
+  7  b := &b;
+  8  s := a+b;
+  9  dbms_output.put_line('sum is ',s);
+ 10  end;
+ 11  /
+Enter value for a: 3
+old   6: a := &a;
+new   6: a := 3;
+Enter value for b: 5
+old   7: b := &b;
+new   7: b := 5;
+dbms_output.put_line('sum is ',s);
+*
+ERROR at line 9:
+ORA-06550: line 9, column 1:
+PLS-00306: wrong number or types of arguments in call to 'PUT_LINE'
+ORA-06550: line 9, column 1:
+PL/SQL: Statement ignored
+
+
+SQL> @sum.sql
+Enter value for a: 2
+old   6: a := &a;
+new   6: a := 2;
+Enter value for b: 2
+old   7: b := &b;
+new   7: b := 2;
+dbms_output.put_line('sum is ',s);
+*
+ERROR at line 9:
+ORA-06550: line 9, column 1:
+PLS-00306: wrong number or types of arguments in call to 'PUT_LINE'
+ORA-06550: line 9, column 1:
+PL/SQL: Statement ignored
+
+
+SQL> @sum.sql
+Enter value for a: 2
+old   6: a := &a;
+new   6: a := 2;
+Enter value for b: 3
+old   7: b := &b;
+new   7: b := 3;
+sum is 5
+
+PL/SQL procedure successfully completed.
+
+SQL> @avg.sql
+  DBMS_OUTPUT.PUT_LINE('The average is: ' || avg);
+                                                *
+ERROR at line 7:
+ORA-06550: line 7, column 49:
+PLS-00103: Encountered the symbol ")" when expecting one of the following:
+(
+
+
+SQL> @avg.sql
+Enter value for num1: 3
+old   6:   num1 := &num1;
+new   6:   num1 := 3;
+Enter value for num2: 7
+old   7:   num2 := &num2;
+new   7:   num2 := 7;
+  dbms_output.put_line('The average is: ' || avg);
+                                                *
+ERROR at line 9:
+ORA-06550: line 9, column 49:
+PLS-00103: Encountered the symbol ")" when expecting one of the following:
+(
+
+
+SQL> @avg.sql
+Enter value for num1: 3
+old   7:   num1 := &num1;
+new   7:   num1 := 3;
+Enter value for num2: 7
+old   8:   num2 := &num2;
+new   8:   num2 := 7;
+Enter value for num3: 15
+old   9:   num3 := &num3;
+new   9:   num3 := 15;
+  dbms_output.put_line('The average is: ' || avg);
+                                                *
+ERROR at line 11:
+ORA-06550: line 11, column 49:
+PLS-00103: Encountered the symbol ")" when expecting one of the following:
+(
+
+
+SQL> @avg.sql
+Enter value for num1: 3
+old   7:   num1 := &num1;
+new   7:   num1 := 3;
+Enter value for num2: 5
+old   8:   num2 := &num2;
+new   8:   num2 := 5;
+Enter value for num3: 8
+old   9:   num3 := &num3;
+new   9:   num3 := 8;
+  dbms_output.put_line('The average is: ' || sum/3);
+                                                *
+ERROR at line 11:
+ORA-06550: line 11, column 49:
+PLS-00103: Encountered the symbol "/" when expecting one of the following:
+(
+
+
+SQL> @avg.sql;
+Enter value for num1: 1
+old   7:   num1 := &num1;
+new   7:   num1 := 1;
+Enter value for num2: 2
+old   8:   num2 := &num2;
+new   8:   num2 := 2;
+Enter value for num3: 3
+old   9:   num3 := &num3;
+new   9:   num3 := 3;
+  dbms_output.put_line('The average is: ' || sum);
+                                                *
+ERROR at line 11:
+ORA-06550: line 11, column 49:
+PLS-00103: Encountered the symbol ")" when expecting one of the following:
+(
+
+
+SQL> @avg.sql;
+Enter value for num1: 1
+old   7:   num1 := &num1;
+new   7:   num1 := 1;
+Enter value for num2: 2
+old   8:   num2 := &num2;
+new   8:   num2 := 2;
+Enter value for num3: 3
+old   9:   num3 := &num3;
+new   9:   num3 := 3;
+  dbms_output.put_line('The average is: ' || sum/3 );
+                                                *
+ERROR at line 11:
+ORA-06550: line 11, column 49:
+PLS-00103: Encountered the symbol "/" when expecting one of the following:
+(
+
+
+SQL> @avg.sql;
+Enter value for num1: 1
+old   7:   num1 := &num1;
+new   7:   num1 := 1;
+Enter value for num2: 2
+old   8:   num2 := &num2;
+new   8:   num2 := 2;
+Enter value for num3: 3
+old   9:   num3 := &num3;
+new   9:   num3 := 3;
+  dbms_output.put_line('The average is: ' || sum );
+                                                 *
+ERROR at line 11:
+ORA-06550: line 11, column 50:
+PLS-00103: Encountered the symbol ")" when expecting one of the following:
+(
+
+
+SQL> @avg.sql;
+Enter value for num1: 1
+old   7:   num1 := &num1;
+new   7:   num1 := 1;
+Enter value for num2: 2
+old   8:   num2 := &num2;
+new   8:   num2 := 2;
+Enter value for num3: 3
+old   9:   num3 := &num3;
+new   9:   num3 := 3;
+  dbms_output.put_line('The average is: ' || sum );
+                                                 *
+ERROR at line 11:
+ORA-06550: line 11, column 50:
+PLS-00103: Encountered the symbol ")" when expecting one of the following:
+(
+ORA-06550: line 12, column 50:
+PLS-00103: Encountered the symbol "/" when expecting one of the following:
+(
+ORA-06550: line 13, column 4:
+PLS-00103: Encountered the symbol "end-of-file" when expecting one of the
+following:
+end not pragma final instantiable order overriding static
+member constructor map
+
+
+SQL> @sum.sql;
+Enter value for a: 1
+old   6: a := &a;
+new   6: a := 1;
+Enter value for b: 2
+old   7: b := &b;
+new   7: b := 2;
+sum is 3
+sum is 1
+
+PL/SQL procedure successfully completed.
+
+SQL> 3
+  3* b integer;
+SQL> @sum.sql;
+Enter value for a: 1
+old   7: a := &a;
+new   7: a := 1;
+Enter value for b: 2
+old   8: b := &b;
+new   8: b := 2;
+Enter value for c: 3
+old   9: c := &c;
+new   9: c := 3;
+sum is 6
+Average is 2
+
+PL/SQL procedure successfully completed.
+
+SQL> @avg.sql;
+Enter value for a: 1
+old   7: a := &a;
+new   7: a := 1;
+Enter value for b: 2
+old   8: b := &b;
+new   8: b := 2;
+Enter value for c: 3
+old   9: c := &c;
+new   9: c := 3;
+Average is 2
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+
