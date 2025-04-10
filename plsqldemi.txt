@@ -275,6 +275,61 @@ new   9: h := 3;
 volume is 24
 
 PL/SQL procedure successfully completed.
+SQL> @prime.sql
+Enter value for number: 10
+old   2:    num INTEGER := &number;
+new   2:    num INTEGER := 10;
+10 is not a prime number.
+
+PL/SQL procedure successfully completed.
+
+SQL> @rev.sql
+Enter value for number: 123
+old   2:    num INTEGER := &number;
+new   2:    num INTEGER := 123;
+Reversed number: 321
+
+PL/SQL procedure successfully completed.
+
+SQL> @pal.sql
+Enter value for number: 123
+old   2:    num INTEGER := &number;
+new   2:    num INTEGER := 123;
+123 is not a palindrome number.
+
+PL/SQL procedure successfully completed.
+
+SQL> @rev.sql
+Enter value for number: 121
+old   2:    num INTEGER := &number;
+new   2:    num INTEGER := 121;
+Reversed number: 121
+
+PL/SQL procedure successfully completed.
+
+SQL> @prime.sql
+Enter value for number: 3
+old   2:    num INTEGER := &number;
+new   2:    num INTEGER := 3;
+3 is a prime number.
+
+PL/SQL procedure successfully completed.
+
+SQL> @fact.sql
+Enter value for n: 5
+old   6: n:=&n;
+new   6: n:=5;
+factorial is 120
+
+PL/SQL procedure successfully completed.
+
+SQL> @pal.sql
+Enter value for number: 121
+old   2:    num INTEGER := &number;
+new   2:    num INTEGER := 121;
+121 is a palindrome number.
+
+PL/SQL procedure successfully completed.
 
  
 
