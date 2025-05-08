@@ -331,5 +331,188 @@ new   2:    num INTEGER := 121;
 
 PL/SQL procedure successfully completed.
 
- 
+ 08/05/25
+user@user-HP-280-G3-MT:~$  sqlplus sys as sysdba
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu May 8 13:26:34 2025
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Enter password: 
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> set serveroutput on
+SQL> @strrev.sql
+Enter a string to reverse: ram
+old   2:     original_string VARCHAR2(100) := '&user_input';
+new   2:     original_string VARCHAR2(100) := 'ram';
+Original String: ram
+Reversed String: mar
+
+PL/SQL procedure successfully completed.
+
+SQL> @strpal
+Enter value for str: amma
+old   2:     str   VARCHAR2(20) := '&str';
+new   2:     str   VARCHAR2(20) := 'amma';
+The string is a palindrome.
+
+PL/SQL procedure successfully completed.
+
+SQL> @strpal
+Enter value for str: sree
+old   2:     str   VARCHAR2(20) := '&str';
+new   2:     str   VARCHAR2(20) := 'sree';
+The string is not a palindrome.
+
+PL/SQL procedure successfully completed.
+
+SQL> creat table cust( id number primary key, name varchar2(100), salary number(10,2);
+SP2-0734: unknown command beginning "creat tabl..." - rest of line ignored.
+SQL> create table cust(id number primary key, name varchar2(100), salary number(10,2);
+create table cust(id number primary key, name varchar2(100), salary number(10,2)
+                                                                               *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table cust ( id number primary key, name varchar2(100),salary number (10,2));
+
+Table created.
+
+SQL> insert into ust (id,name,salary) values (1,'Jhone wick',5000),(2,'sree',30000),(3,'sarojith',6000);
+insert into ust (id,name,salary) values (1,'Jhone wick',5000),(2,'sree',30000),(3,'sarojith',6000)
+                                                             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> insert into cust  (id,name,salary) values (1,'Jhone wick',5000),(2,'sree',30000),(3,'sarojith',6000);
+insert into cust  (id,name,salary) values (1,'Jhone wick',5000),(2,'sree',30000),(3,'sarojith',6000)
+                                                               *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> insert into cust (id,name,salary) values (1,'jhon wick',5000);
+
+1 row created.
+
+SQL> insert into cust (id,name,salary) values (2,'sree',30000);
+
+1 row created.
+
+SQL> insert into cust (id,name,salary) values (3,'sai',40000);
+
+1 row created.
+
+SQL> select * from cust;
+
+	ID
+----------
+NAME
+--------------------------------------------------------------------------------
+    SALARY
+----------
+	 1
+jhon wick
+      5000
+
+	 2
+sree
+     30000
+
+	ID
+----------
+NAME
+--------------------------------------------------------------------------------
+    SALARY
+----------
+
+	 3
+sai
+     40000
+
+
+SQL> @imp.sql
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> @imp.sql
+dbms_output.put_line(total_rows||'customer selected');
+                     *
+ERROR at line 9:
+ORA-06550: line 9, column 22:
+PLS-00201: identifier 'TOTAL_ROWS' must be declared
+ORA-06550: line 9, column 1:
+PL/SQL: Statement ignored
+
+
+SQL> @imp.sql
+3customer selected
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from cust;
+
+	ID
+----------
+NAME
+--------------------------------------------------------------------------------
+    SALARY
+----------
+	 1
+jhon wick
+      5500
+
+	 2
+sree
+     30500
+
+	ID
+----------
+NAME
+--------------------------------------------------------------------------------
+    SALARY
+----------
+
+	 3
+sai
+     40500
+
+
+SQL> alter table cust modify (name varchar(20));
+
+Table altered.
+
+SQL> select * from cust;
+
+	ID NAME 		    SALARY
+---------- -------------------- ----------
+	 1 jhon wick		      5500
+	 2 sree 		     30500
+	 3 sai			     40500
+
+SQL> @exp.sql
+cursor c1 is select id,name,salary,from cust;
+                                   *
+ERROR at line 5:
+ORA-06550: line 5, column 36:
+PL/SQL: ORA-00936: missing expression
+ORA-06550: line 5, column 14:
+PL/SQL: SQL Statement ignored
+
+
+SQL> @exp.sql
+1 jhon wick 5500
+2 sree 30500
+3 sai 40500
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+
 
