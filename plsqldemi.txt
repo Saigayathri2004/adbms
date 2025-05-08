@@ -514,5 +514,13 @@ SQL> @exp.sql
 PL/SQL procedure successfully completed.
 
 SQL> 
+SQL> @exp2.sql
+Before Update: 1 jhon wick 5500
+After Update: 1 jhon wick 6500
+Before Update: 2 sree 30500
+After Update: 2 sree 32500
+Before Update: 3 sai 40500
+After Update: 3 sai 45500
+
 
 
