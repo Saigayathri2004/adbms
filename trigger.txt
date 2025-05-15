@@ -1,1 +1,188 @@
+user@user-HP-280-G3-MT:~$ sqlplus sys as sysdba
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu May 15 09:57:54 2025
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Enter password: 
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> create table cutomer1(cid varchar(5) primay key,cname varchar(20),age int,salary int);
+create table cutomer1(cid varchar(5) primay key,cname varchar(20),age int,salary int)
+                                     *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table cust1(cid varchar(5) primary key,cname varchar(20),age int,salary int);
+
+Table created.
+
+SQL> create user u1 identified by 12345;
+create user u1 identified by 12345
+            *
+ERROR at line 1:
+ORA-01920: user name 'U1' conflicts with another user or role name
+
+
+SQL> create user u1 identified by 12345;
+create user u1 identified by 12345
+            *
+ERROR at line 1:
+ORA-01920: user name 'U1' conflicts with another user or role name
+
+
+SQL>  create user sree identified by 12345;
+
+User created.
+
+SQL> grant all privilages to sree;
+grant all privilages to sree
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege
+
+
+SQL> grand all privilages to sree;
+SP2-0734: unknown command beginning "grand all ..." - rest of line ignored.
+SQL> grand all privileges to sree;
+SP2-0734: unknown command beginning "grand all ..." - rest of line ignored.
+SQL> grant all privileges to sree;
+
+Grant succeeded.
+
+SQL> exit;
+Disconnected from Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+user@user-HP-280-G3-MT:~$ sqlplus sree as sysdba
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu May 15 10:08:21 2025
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Enter password: 
+ERROR:
+ORA-01031: insufficient privileges
+
+
+Enter user-name: sree
+Enter password: 
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> insert into cust1 values ('01','james',35,20000);
+insert into cust1 values ('01','james',35,20000)
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create table cust1(cid varchar(5) primary key,cname varchar(20),age int,salary int);
+
+Table created.
+
+SQL> insert into cust1 values ('01','james',35,20000);
+
+1 row created.
+
+SQL> insert into cust1 values ('02','ann',20,12000);
+
+1 row created.
+
+SQL> insert into cust1 values ('03','frances',24,18000);
+
+1 row created.
+
+SQL> select * from cust1;
+
+CID   CNAME			  AGE	  SALARY
+----- -------------------- ---------- ----------
+01    james			   35	   20000
+02    ann			   20	   12000
+03    frances			   24	   18000
+
+SQL> create or replace trigger t1 before insert or udate or delete on cust1 for each row;
+  2  ^C
+
+SQL>  create or replace trigger t1 before insert or udate or delete on cust1 for each row
+  2  ^C
+
+SQL> alter table cust1 modify cid int;
+alter table cust1 modify cid int
+                         *
+ERROR at line 1:
+ORA-01439: column to be modified must be empty to change datatype
+
+
+SQL> drop table cust1;
+
+Table dropped.
+
+SQL> create table cust1(cid int primary key,cname varchar(20),age int,salary int);
+
+Table created.
+
+SQL> insert into cust1 values (01,'james',35,20000);  
+
+1 row created.
+
+SQL> insert into cust1 values (02,'ann',20,12000);
+
+1 row created.
+
+SQL> insert into cust1 values (03,'frances',24,18000);
+
+1 row created.
+
+SQL> select * from cust1;
+
+       CID CNAME		       AGE     SALARY
+---------- -------------------- ---------- ----------
+	 1 james			35	20000
+	 2 ann				20	12000
+	 3 frances			24	18000
+
+SQL> @saldiff.sql
+ create or replace trigger t1 before insert or udate or delete on cust1 for each row
+                                               *
+ERROR at line 1:
+ORA-04072: invalid trigger type
+
+
+SQL> @saldiff.sql
+ when(new id > 0)
+          *
+ERROR at line 2:
+ORA-00920: invalid relational operator
+
+
+SQL> @saldiff.sql
+ when(new cid>0)
+          *
+ERROR at line 2:
+ORA-00920: invalid relational operator
+
+
+SQL> set serveroutput on;
+SQL> @saldiff.sql
+ when(new cid>0)
+          *
+ERROR at line 2:
+ORA-00920: invalid relational operator
+
+
+SQL> @saldiff.sql
+ (new cid>0)
+      *
+ERROR at line 3:
+ORA-00920: invalid relational operator
+
+
+SQL> @saldiff.sql
+
+Trigger created.
+
+SQL> 
 
