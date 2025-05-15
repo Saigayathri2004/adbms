@@ -184,5 +184,27 @@ SQL> @saldiff.sql
 
 Trigger created.
 
+SQL>  update cust1 set salary= salary+500;
+old salary 20000
+new salary 20500
+salary difference500
+old salary 12000
+new salary 12500
+salary difference500
+old salary 18000
+new salary 18500
+salary difference500
+
+3 rows updated.
+
+SQL> select * from cust1;
+
+       CID CNAME		       AGE     SALARY
+---------- -------------------- ---------- ----------
+	 1 james			35	20500
+	 2 ann				20	12500
+	 3 frances			24	18500
+
 SQL> 
+
 
