@@ -205,6 +205,46 @@ SQL> select * from cust1;
 	 2 ann				20	12500
 	 3 frances			24	18500
 
-SQL> 
+SQL>  create table purchase (id int primary key,item varchar(10),noofitem int,price int);
+
+Table created.
+
+SQL> create table stock (foreign key (item) references purchase (item),stock_available int);
+create table stock (foreign key (item) references purchase (item),stock_available int)
+                                 *
+ERROR at line 1:
+ORA-00904: "ITEM": invalid identifier
+
+
+SQL> CREATE TABLE stock (item VARCHAR(50), stock_available INT,FOREIGN KEY (item) REFERENCES purchase(item));
+CREATE TABLE stock (item VARCHAR(50), stock_available INT,FOREIGN KEY (item) REFERENCES purchase(item))
+                                                                                                 *
+ERROR at line 1:
+ORA-02270: no matching unique or primary key for this column-list
+
+
+SQL> CREATE TABLE stock (
+    item VARCHAR(10),         
+    stock_available INT,
+    FOREIGN KEY (item) REFERENCES purchase(item)
+);  2    3    4    5  
+SQL> CREATE TABLE stock (item VARCHAR(10),stock_available INT,FOREIGN KEY (item) REFERENCES purchase(item));
+CREATE TABLE stock (item VARCHAR(10),stock_available INT,FOREIGN KEY (item) REFERENCES purchase(item))
+                                                                                                *
+ERROR at line 1:
+ORA-02270: no matching unique or primary key for this column-list
+
+
+SQL> drop table purchase;
+
+Table dropped.
+
+SQL> create table purchase (id int primary key,item varchar(10) unique,noofitem int,price int);
+
+Table created.
+
+SQL> CREATE TABLE stock (item VARCHAR(10),stock_available INT,FOREIGN KEY (item) REFERENCES purchase(item));
+
+Table created.
 
 
