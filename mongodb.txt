@@ -1,1 +1,285 @@
+user@user-HP-280-G3-MT:~$ mongo
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 3.6.3
+Server has startup warnings: 
+2025-05-20T13:18:24.587+0530 I STORAGE  [initandlisten] 
+2025-05-20T13:18:24.587+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2025-05-20T13:18:24.587+0530 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2025-05-20T13:18:28.052+0530 I CONTROL  [initandlisten] 
+2025-05-20T13:18:28.052+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2025-05-20T13:18:28.052+0530 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2025-05-20T13:18:28.052+0530 I CONTROL  [initandlisten] 
+> use sai;
+switched to db sai
+> db
+sai
+> db.dropDatabase();
+{ "ok" : 1 }
+> db.dropDatabase(sai);
+2025-05-20T13:48:39.185+0530 E QUERY    [thread1] ReferenceError: sai is not defined :
+@(shell):1:1
+> use sai;
+switched to db sai
+> db.dropDatabase(sai);
+2025-05-20T13:49:02.051+0530 E QUERY    [thread1] ReferenceError: sai is not defined :
+@(shell):1:1
+> use sai;
+switched to db sai
+> db.createCollection("student");
+{ "ok" : 1 }
+> db.createCollection("teacher");
+{ "ok" : 1 }
+> show collections;
+student
+teacher
+> db.teacher.drop();
+true
+> show collections;
+student
+> db.student.insert({"rollno":1,"name":"aby"});
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({"rollno":2,"name":"sai","add":"vally of himalaya"});
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({"rollno":3,"name":"sree","add":" himalaya"});
+WriteResult({ "nInserted" : 1 })
+> db.student.find();
+{ "_id" : ObjectId("682c3c4f601d9f47fac8d01c"), "rollno" : 1, "name" : "aby" }
+{ "_id" : ObjectId("682c3cc9601d9f47fac8d01d"), "rollno" : 2, "name" : "sai", "add" : "vally of himalaya" }
+{ "_id" : ObjectId("682c3cef601d9f47fac8d01e"), "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+> db.student.find().pretty();
+{
+	"_id" : ObjectId("682c3c4f601d9f47fac8d01c"),
+	"rollno" : 1,
+	"name" : "aby"
+}
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "sai",
+	"add" : "vally of himalaya"
+}
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+> db.student.insert({"_id":103,"rollno":3,"name":"sree","add":" himalaya"});
+WriteResult({ "nInserted" : 1 })
+> db.student.find().pretty();
+{
+	"_id" : ObjectId("682c3c4f601d9f47fac8d01c"),
+	"rollno" : 1,
+	"name" : "aby"
+}
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "sai",
+	"add" : "vally of himalaya"
+}
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+> db.student.insert({"_id":104,"rollno":5,"name":"sala","add":" alappuzha"});
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({"_id":105,"rollno":6,"name":"rohan","add":" aluva"});
+WriteResult({ "nInserted" : 1 })
+> db.student.find().pretty();
+{
+	"_id" : ObjectId("682c3c4f601d9f47fac8d01c"),
+	"rollno" : 1,
+	"name" : "aby"
+}
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "sai",
+	"add" : "vally of himalaya"
+}
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find().pretty().limit(3);
+{
+	"_id" : ObjectId("682c3c4f601d9f47fac8d01c"),
+	"rollno" : 1,
+	"name" : "aby"
+}
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "sai",
+	"add" : "vally of himalaya"
+}
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+> db.student.find().pretty().skip(2);
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find().pretty().skip(2),limit(2);
+2025-05-20T14:08:43.560+0530 E QUERY    [thread1] ReferenceError: limit is not defined :
+@(shell):1:36
+> db.student.find().pretty().skip(2),limit(1);
+2025-05-20T14:08:56.272+0530 E QUERY    [thread1] ReferenceError: limit is not defined :
+@(shell):1:36
+> db.student.find().pretty().limit(2),skip(2);
+2025-05-20T14:09:18.864+0530 E QUERY    [thread1] ReferenceError: skip is not defined :
+@(shell):1:37
+> db.student.find().pretty().limit(2).skip(2);
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+> db.student.find().pretty().limit(4).skip(2);
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find().pretty().limit(3).skip(2);
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+> db.student.remove({"rollno":1});
+WriteResult({ "nRemoved" : 1 })
+> db.student.find().pretty();
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "sai",
+	"add" : "vally of himalaya"
+}
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.update({"rollno":2},{$set :{"name":"gopika"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.student.find().pretty();
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "gopika",
+	"add" : "vally of himalaya"
+}
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find().pretty().sor({"name":1});
+2025-05-20T14:29:54.570+0530 E QUERY    [thread1] TypeError: db.student.find(...).pretty(...).sor is not a function :
+@(shell):1:1
+> db.student.find().pretty().sort({"name":1});
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "gopika",
+	"add" : "vally of himalaya"
+}
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+> db.student.find().pretty().sort({"name":-1});
+{
+	"_id" : ObjectId("682c3cef601d9f47fac8d01e"),
+	"rollno" : 3,
+	"name" : "sree",
+	"add" : " himalaya"
+}
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+{
+	"_id" : ObjectId("682c3cc9601d9f47fac8d01d"),
+	"rollno" : 2,
+	"name" : "gopika",
+	"add" : "vally of himalaya"
+}
+> db.student.find({"rollno":5});
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+> db.student.find({"rollno":{$ne:5}});
+{ "_id" : ObjectId("682c3cc9601d9f47fac8d01d"), "rollno" : 2, "name" : "gopika", "add" : "vally of himalaya" }
+{ "_id" : ObjectId("682c3cef601d9f47fac8d01e"), "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find({"rollno":{$lt:5}});
+{ "_id" : ObjectId("682c3cc9601d9f47fac8d01d"), "rollno" : 2, "name" : "gopika", "add" : "vally of himalaya" }
+{ "_id" : ObjectId("682c3cef601d9f47fac8d01e"), "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+> db.student.find({"rollno":{$gt:5}});
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find({"rollno":{$gte:5}});
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find({"rollno":{$lte:5}});
+{ "_id" : ObjectId("682c3cc9601d9f47fac8d01d"), "rollno" : 2, "name" : "gopika", "add" : "vally of himalaya" }
+{ "_id" : ObjectId("682c3cef601d9f47fac8d01e"), "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 103, "rollno" : 3, "name" : "sree", "add" : " himalaya" }
+{ "_id" : 104, "rollno" : 5, "name" : "sala", "add" : " alappuzha" }
+> db.student.find({"name":/*R/});
+2025-05-20T14:43:06.377+0530 E QUERY    [thread1] SyntaxError: unterminated comment @(shell):1:24
+> db.student.find({"name":/*A/});
+2025-05-20T14:43:17.479+0530 E QUERY    [thread1] SyntaxError: unterminated comment @(shell):1:24
+> db.student.find({"name": /*A/});
+2025-05-20T14:43:41.905+0530 E QUERY    [thread1] SyntaxError: unterminated comment @(shell):1:25
+> db.student.find({"name": /^A/});
+> db.student.find({"name": /^R/});
+> db.student.find({"name": /^r/});
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
+> db.student.find({$and:[{"rollno":2},{"name":"gopika"}]});
+{ "_id" : ObjectId("682c3cc9601d9f47fac8d01d"), "rollno" : 2, "name" : "gopika", "add" : "vally of himalaya" }
+> db.student.find({$or:[{"rollno":2},{"name":"rohan"}]});
+{ "_id" : ObjectId("682c3cc9601d9f47fac8d01d"), "rollno" : 2, "name" : "gopika", "add" : "vally of himalaya" }
+{ "_id" : 105, "rollno" : 6, "name" : "rohan", "add" : " aluva" }
 
